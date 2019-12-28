@@ -1,0 +1,20 @@
+{
+  "name": "instaanalyze",
+  "version": "1.0.0",
+  "description": "Instagram Analyzer",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "instagram-web-api": "^2.1.0",
+    "sleep": "^6.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "start"
+  },
+  "keywords": [
+    "Instagram"
+  ],
+  "author": "Son IG Bukuculer",
+  "license": "ISC"
+}
