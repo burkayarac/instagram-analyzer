@@ -10,7 +10,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "start"
+    "start": "node app.js"
   },
   "keywords": [
     "Instagram"
