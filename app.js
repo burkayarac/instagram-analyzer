@@ -3,11 +3,11 @@ const Instagram = require('node-instagram').default;
 
 // Create a new instance.
 const instagram = new Instagram({
-  clientId: '7984255126',
-  clientSecret: 'oDLR0m7TfqVQtYgTOQ6Dx0V1xrCgiCaS',
+  clientId: '451070232247135',
+  clientSecret: '0dfb9c64c86b20f62b77f7c47b3b9805',
 });
 
-const redirectUri = 'http://localhost:3000/auth/instagram/callback';
+const redirectUri = 'https://son-ig-bukucu.herokuapp.com/auth/instagram/callback';
 
 // create express server
 const app = express();
