@@ -6,11 +6,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "instagram-web-api": "^2.1.0",
+    "node-instagram": "^4.3.0",
     "sleep": "^6.1.0"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node app.js"
+    "test": "start"
   },
   "keywords": [
     "Instagram"

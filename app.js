@@ -1,70 +1,34 @@
-var express=require("express")
-var app=express()
-var sleep = require('sleep');
+const express = require('express');
+const Instagram = require('node-instagram').default;
 
-app.get('/',function(req,res){
-    
-    const Instagram = require('instagram-web-api')
-    const username='software.plus', password='123321xx'
-
-    const client = new Instagram({ username, password })
-
-    ;(async () => {
-    await client.login()
-    const profile = await client.getProfile()
-    const instagram = await client.getUserByUsername({ username: 'burkay.arac' })
-    var UserToFind = instagram['id'];
-    var followersOfUser = [];
-    var end_cursor;
-
-    var max = instagram["edge_followed_by"]["count"]
-    while(followersOfUser.length <= max){
-        await client.getFollowers({ userId: UserToFind, first: 50, after: end_cursor }).then(followers => {
-        followers.data.forEach(function(value){
-          followersOfUser.push(value.username)
-        })
-        sleep.sleep(1)
-        end_cursor = followers.page_info.end_cursor;
-      })
-    }
-    try {
-        var i=0
-        while(i != followersOfUser.length) {
-            await client.getUserByUsername({ username:followersOfUser[i] }).then(users => {
-                var j=0
-                if(users.edge_followed_by.count < 100) {
-                    j++
-                }
-                if(users.edge_follow.count < 100) {
-                    j++
-                }
-                if(users.edge_owner_to_timeline_media.count < 3) {
-                    j++
-                }
-                if(users.full_name == "") {
-                    j++
-                }
-                if(j > 3) {
-                    console.log(users.username)
-                }
-            }).then(function(){
-                i++
-                console.log(i)
-                if(i % 5 == 0)
-                {
-                    sleep.sleep(1)
-                }
-            })
-            
-        }
-    }catch(e)
-    {
-        console.log(e)
-    }
-    })()
-    
-})
-var server = app.listen(3343, function() {
-    console.log('Express server listening on port ' + server.address().port);
+// Create a new instance.
+const instagram = new Instagram({
+  clientId: '7984255126',
+  clientSecret: 'oDLR0m7TfqVQtYgTOQ6Dx0V1xrCgiCaS',
 });
-server.timeout = 10000000;
+
+const redirectUri = 'http://localhost:3000/auth/instagram/callback';
+
+// create express server
+const app = express();
+
+// Redirect user to instagram oauth
+app.get('/auth/instagram', (req, res) => {
+  res.redirect(instagram.getAuthorizationUrl(redirectUri, { scope: ['basic'] }));
+});
+
+// Handle auth code and get access_token for user
+app.get('/auth/instagram/callback', async (req, res) => {
+  try {
+    const data = await instagram.authorizeUser(req.query.code, redirectUri);
+    // access_token in data.access_token
+    res.json(data);
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+// listen to port 3000
+app.listen(3000, () => {
+  console.log('app listening on http://localhost:3000');
+});
